@@ -48,6 +48,8 @@
   --color-flame: var(--flame);
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
+  --color-ink-2: var(--ink-2);
+  --color-bone: var(--bone);
   --color-paper: var(--paper);
   --color-paper-foreground: var(--paper-foreground);
   --color-on-canvas: var(--on-canvas);
@@ -82,6 +84,8 @@
   --grid-line: oklch(1 0 0 / 0.14);
   --ink: oklch(0.16 0.02 40);
   --ink-foreground: oklch(0.98 0.004 60);
+  --ink-2: oklch(0.205 0.022 40); /* raised surface on ink */
+  --bone: oklch(0.955 0.012 70); /* warm light neutral */
   --paper: oklch(0.995 0.003 60);
   --paper-foreground: oklch(0.18 0.02 40);
 
@@ -251,9 +255,78 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  /* Looping decoration would strobe at 0.01ms, so stop it outright */
+  .animate-marquee,
+  .animate-spin-slow,
+  .trace-flow {
+    animation: none !important;
+  }
+}
+
+/* ---------- Sections ---------- */
+
+/* Section headings: same face as the hero name, a touch more open for multi-line titles */
+@utility type-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variation-settings: "wdth" 88;
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+/* Drafting-paper grids */
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(oklch(1 0 0 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(1 0 0 / 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+@utility bg-blueprint-light {
+  background-image:
+    linear-gradient(oklch(0.2 0.03 40 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.2 0.03 40 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Infinite ticker */
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+@utility animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    rotate: 360deg;
+  }
+}
+@utility animate-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+
+/* "Current" running along schematic traces on project-card hover */
+@keyframes trace-flow {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+.trace-flow {
+  stroke-dasharray: 6 10;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.group:hover .trace-flow,
+.group:focus-within .trace-flow {
+  opacity: 1;
+  animation: trace-flow 1.2s linear infinite;
 }
 
 /* Pre-hide GSAP-revealed elements once JS is confirmed (class set in <head>) */
-.js [data-reveal] {
+.js [data-reveal],
+.js [data-reveal-item] {
   visibility: hidden;
 }

@@ -1,7 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { FloatingNav } from "@/components/hero/FloatingNav";
 import { Hero } from "@/components/hero/Hero";
-import { SectionStub } from "@/components/sections/SectionStub";
+import { About } from "@/components/sections/About";
+import { CareerCta } from "@/components/sections/CareerCta";
+import { Contact } from "@/components/sections/Contact";
+import { Education } from "@/components/sections/Education";
+import { Experience } from "@/components/sections/Experience";
+import { Footer } from "@/components/sections/Footer";
+import { Projects } from "@/components/sections/Projects";
+import { Skills } from "@/components/sections/Skills";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,12 +34,19 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main>
-      <Hero />
-      <SectionStub id="about" index="01" title="About" />
-      <SectionStub id="projects" index="02" title="Projects" />
-      <SectionStub id="skills" index="03" title="Skills" />
-      <SectionStub id="contact" index="04" title="Contact" />
-    </main>
+    <>
+      <FloatingNav />
+      <main>
+        <Hero />
+        <About />
+        <Education />
+        <Skills />
+        <Projects />
+        <Experience />
+        <CareerCta />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }
