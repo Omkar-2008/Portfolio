@@ -5,26 +5,39 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export type Tone = "paper" | "ink" | "canvas";
 
-const TONES: Record<Tone, { surface: string; meta: string; rule: string; mark: string }> = {
+/**
+ * Three surfaces, all lifted from the hero:
+ *  - canvas: the hero's orange gradient
+ *  - ink:    the hero's deep-red ember frame (cards on it use near-black ink, like the hero contact card)
+ *  - paper:  the warm white of the hero's project card
+ */
+const TONES: Record<Tone, { surface: string; meta: string; rule: string; mark: string; line: string }> = {
   paper: {
-    surface: "bg-bone bg-blueprint-light text-paper-foreground border-paper-foreground/10",
+    surface: "bg-paper text-paper-foreground border-on-canvas/40",
     meta: "text-paper-foreground/55",
     rule: "bg-paper-foreground/10",
     mark: "text-paper-foreground/35",
+    line: "bg-paper-foreground/[0.07]",
   },
   ink: {
-    surface: "bg-ink bg-blueprint text-ink-foreground border-on-canvas/10",
-    meta: "text-ink-foreground/50",
-    rule: "bg-on-canvas/10",
-    mark: "text-ink-foreground/30",
+    surface: "bg-frame text-ink-foreground border-on-canvas/25",
+    meta: "text-ink-foreground/55",
+    rule: "bg-on-canvas/15",
+    mark: "text-on-canvas/45",
+    line: "bg-on-canvas/[0.08]",
   },
   canvas: {
     surface: "bg-canvas text-on-canvas border-on-canvas/40",
     meta: "text-on-canvas/75",
     rule: "bg-on-canvas/25",
     mark: "text-on-canvas/60",
+    line: "bg-grid",
   },
 };
+
+/** Same column rhythm as the hero's GridOverlay. */
+const GRID_COLS_SM = [25, 50, 75];
+const GRID_COLS_LG = [16.666, 33.333, 50, 66.666, 83.333];
 
 type PanelProps = {
   id: string;
@@ -63,6 +76,16 @@ export function Panel({ id, tone, index, label, children, className = "", before
             <p className="type-eyebrow hidden sm:block">Omkar Potnuru — Portfolio ©2026</p>
           </div>
         )}
+
+        {/* Hairline columns, echoing the hero grid */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          {GRID_COLS_SM.map((x) => (
+            <span key={`s${x}`} className={`absolute inset-y-0 w-px lg:hidden ${t.line}`} style={{ left: `${x}%` }} />
+          ))}
+          {GRID_COLS_LG.map((x) => (
+            <span key={`l${x}`} className={`absolute inset-y-0 hidden w-px lg:block ${t.line}`} style={{ left: `${x}%` }} />
+          ))}
+        </div>
 
         {/* Registration marks in the corners, echoing the hero grid */}
         {(["left-3 top-3", "right-3 top-3", "bottom-3 left-3", "bottom-3 right-3"] as const).map((pos) => (

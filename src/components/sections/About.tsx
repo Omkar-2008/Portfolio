@@ -6,7 +6,7 @@ import { SectionHeading } from "./SectionHeading";
 const STAT_STYLES = [
   "bg-canvas text-on-canvas border-transparent",
   "bg-ink text-ink-foreground border-transparent",
-  "bg-paper text-paper-foreground border-paper-foreground/12",
+  "bg-frame text-on-canvas border-transparent",
 ];
 
 export function About() {

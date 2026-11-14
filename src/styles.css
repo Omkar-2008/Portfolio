@@ -84,8 +84,8 @@
   --grid-line: oklch(1 0 0 / 0.14);
   --ink: oklch(0.16 0.02 40);
   --ink-foreground: oklch(0.98 0.004 60);
-  --ink-2: oklch(0.205 0.022 40); /* raised surface on ink */
-  --bone: oklch(0.955 0.012 70); /* warm light neutral */
+  --ink-2: oklch(0.185 0.035 36); /* card surface on the ember frame (hero contact-card ink, warmed) */
+  --bone: oklch(0.975 0.008 60); /* inset surface on paper */
   --paper: oklch(0.995 0.003 60);
   --paper-foreground: oklch(0.18 0.02 40);
 
@@ -275,7 +275,13 @@
   text-transform: uppercase;
 }
 
-/* Drafting-paper grids */
+/* Dark sections reuse the hero's ember frame gradient */
+@utility bg-frame {
+  background: var(--gradient-frame);
+  background-color: var(--ember);
+}
+
+/* Drafting-paper grids (project media only) */
 @utility bg-blueprint {
   background-image:
     linear-gradient(oklch(1 0 0 / 0.045) 1px, transparent 1px),
