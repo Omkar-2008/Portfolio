@@ -50,7 +50,7 @@ function Actions({
 }) {
   const primary =
     tone === "canvas"
-      ? "bg-ink text-ink-foreground shadow-ink hover:bg-paper hover:text-paper-foreground"
+      ? "bg-primary text-primary-foreground shadow-ink hover:bg-paper hover:text-paper-foreground"
       : "bg-primary text-primary-foreground hover:bg-paper hover:text-paper-foreground";
   const secondary =
     tone === "canvas"

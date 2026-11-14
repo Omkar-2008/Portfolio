@@ -75,23 +75,31 @@
 :root {
   --radius: 0.875rem;
 
-  /* Brand palette — #FF4D00 / #FF5A00 / #FF6A00 on deep red #400600 */
-  --ember: oklch(0.241 0.089 32.9); /* #400600 outer frame */
-  --blaze: oklch(0.668 0.224 37); /* #FF4D00 */
-  --flame: oklch(0.701 0.201 44.8); /* #FF6A00 */
-  --primary: oklch(0.681 0.214 40.1); /* #FF5A00 */
-  --primary-foreground: oklch(0.99 0.005 60);
+  /*
+   * Brand palette: "Graphite & Volt". Graphite hero and panels, near-black
+   * sections, warm white paper, and an electric-yellow accent like the safety
+   * markings on electrical panels. On light surfaces the accent switches to a
+   * deep brass so it stays readable (see "Accent on light surfaces" below).
+   * Previous palettes, to revert:
+   *   cobalt:    --ember 0.165 0.035 262 · --primary 0.68 0.17 45 · canvas cobalt 0.6/0.48/0.34 hue 256-268
+   *   orange v2: --ember 0.175 0.02 42 · --primary 0.655 0.19 41 · canvas flame -> primary -> blaze
+   *   orange v1: --ember 0.241 0.089 32.9 · --primary 0.681 0.214 40.1 · --flame 0.701 0.201 44.8
+   */
+  --ember: oklch(0.155 0.004 260); /* near-black frame */
+  --blaze: oklch(0.8 0.165 85); /* amber */
+  --flame: oklch(0.92 0.16 102); /* bright volt highlight */
+  --primary: oklch(0.885 0.18 98); /* volt yellow */
+  --primary-foreground: oklch(0.15 0.004 260);
+  --brass: oklch(0.6 0.135 72); /* the accent on paper */
 
-  --on-canvas: oklch(0.995 0.004 60);
-  --grid-line: oklch(1 0 0 / 0.14);
-  --ink: oklch(0.16 0.02 40);
-  --ink-foreground: oklch(0.98 0.004 60);
-  --ink-2: oklch(
-    0.185 0.035 36
-  ); /* card surface on the ember frame (hero contact-card ink, warmed) */
-  --bone: oklch(0.975 0.008 60); /* inset surface on paper */
-  --paper: oklch(0.995 0.003 60);
-  --paper-foreground: oklch(0.18 0.02 40);
+  --on-canvas: oklch(0.97 0.004 95);
+  --grid-line: oklch(1 0 0 / 0.08);
+  --ink: oklch(0.13 0.004 260);
+  --ink-foreground: oklch(0.97 0.004 95);
+  --ink-2: oklch(0.2 0.005 260); /* card surface on the dark frame */
+  --bone: oklch(0.945 0.007 95); /* inset surface on paper */
+  --paper: oklch(0.975 0.006 95); /* warm white */
+  --paper-foreground: oklch(0.17 0.005 260);
 
   --background: var(--ember);
   --foreground: var(--on-canvas);
@@ -99,28 +107,28 @@
   --card-foreground: var(--paper-foreground);
   --popover: var(--paper);
   --popover-foreground: var(--paper-foreground);
-  --secondary: oklch(0.32 0.1 34);
+  --secondary: oklch(0.25 0.005 260);
   --secondary-foreground: var(--on-canvas);
-  --muted: oklch(0.32 0.1 34);
-  --muted-foreground: oklch(0.85 0.05 50);
+  --muted: oklch(0.25 0.005 260);
+  --muted-foreground: oklch(0.74 0.008 260);
   --accent: var(--flame);
-  --accent-foreground: var(--on-canvas);
+  --accent-foreground: var(--ink);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 0.35);
-  --input: oklch(1 0 0 / 0.3);
-  --ring: var(--on-canvas);
+  --border: oklch(1 0 0 / 0.2);
+  --input: oklch(1 0 0 / 0.2);
+  --ring: var(--primary);
 
+  /* Graphite canvas: a lit patch behind the portrait with a faint volt glow, darkening to the corners */
   --gradient-canvas:
-    radial-gradient(60% 55% at 62% 42%, oklch(0.76 0.18 52 / 0.85) 0%, transparent 70%),
-    radial-gradient(45% 50% at 12% 88%, oklch(0.6 0.22 34 / 0.7) 0%, transparent 70%),
-    radial-gradient(40% 40% at 95% 5%, oklch(0.74 0.19 48 / 0.6) 0%, transparent 70%),
-    linear-gradient(160deg, var(--flame) 0%, var(--primary) 45%, var(--blaze) 100%);
-  --gradient-frame: radial-gradient(80% 60% at 50% 40%, oklch(0.3 0.11 34) 0%, var(--ember) 70%);
+    radial-gradient(42% 40% at 60% 42%, oklch(0.885 0.18 98 / 0.1) 0%, transparent 70%),
+    radial-gradient(60% 60% at 55% 35%, oklch(0.33 0.006 260 / 0.95) 0%, transparent 72%),
+    linear-gradient(160deg, oklch(0.27 0.005 260) 0%, oklch(0.21 0.004 260) 55%, oklch(0.165 0.004 260) 100%);
+  --gradient-frame: radial-gradient(80% 60% at 50% 35%, oklch(0.2 0.004 260) 0%, var(--ember) 72%);
 
   --shadow-float:
-    0 30px 60px -20px oklch(0.2 0.08 33 / 0.55), 0 8px 18px -8px oklch(0.2 0.08 33 / 0.35);
-  --shadow-ink: 0 30px 60px -18px oklch(0.12 0.05 33 / 0.7);
+    0 30px 60px -20px oklch(0 0 0 / 0.55), 0 8px 18px -8px oklch(0 0 0 / 0.35);
+  --shadow-ink: 0 30px 60px -18px oklch(0 0 0 / 0.7);
 
   --chart-1: var(--blaze);
   --chart-2: var(--flame);
@@ -350,4 +358,19 @@
 .skill-figure-dark {
   --hairline-plate: var(--ink);
   --hairline-hi: var(--flame);
+}
+
+/* Accent on light surfaces: volt yellow is unreadable on paper, so light surfaces use brass;
+   dark surfaces nested inside them switch back to volt. */
+.bg-paper,
+.bg-bone {
+  --primary: var(--brass);
+  --primary-foreground: oklch(0.99 0.004 95);
+}
+.bg-ink,
+.bg-ink-2,
+.bg-frame,
+.bg-canvas {
+  --primary: oklch(0.885 0.18 98);
+  --primary-foreground: oklch(0.15 0.004 260);
 }

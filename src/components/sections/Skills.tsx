@@ -47,7 +47,7 @@ export function Skills() {
     <Panel id="skills" tone="canvas" index="03" label="Skills">
       <SectionHeading
         lines={["My technical", "arsenal."]}
-        accentClass="text-ink"
+        accentClass="text-primary"
         aside={
           <p className="max-w-sm text-sm leading-relaxed text-on-canvas/85">
             Four disciplines I practise across drafting, installation, embedded control and quality

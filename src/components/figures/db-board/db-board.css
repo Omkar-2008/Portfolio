@@ -6,28 +6,30 @@
  * frame; live circuits and the needle use the brand orange.
  */
 .iso.db-figure[data-theme="light"] {
-  --db-accent: oklch(0.62 0.22 36);
+  --db-accent: oklch(0.86 0.18 95); /* volt: live cables */
+  --db-needle: oklch(0.2 0.005 260);
+  --db-heat: oklch(0.66 0.21 38);
   --db-warm: oklch(0.88 0.16 85);
 
-  --anatomy-paper: oklch(0.985 0.012 75);
-  --anatomy-face: oklch(0.995 0.008 75);
-  --anatomy-top: oklch(0.995 0.008 75);
-  --anatomy-shade-0: oklch(0.84 0.07 52);
-  --anatomy-shade-1: oklch(0.88 0.06 56);
-  --anatomy-shade-2: oklch(0.92 0.045 60);
-  --anatomy-shade-3: oklch(0.955 0.03 66);
+  --anatomy-paper: oklch(0.975 0.006 95);
+  --anatomy-face: oklch(0.99 0.004 95);
+  --anatomy-top: oklch(0.99 0.004 95);
+  --anatomy-shade-0: oklch(0.8 0.006 260);
+  --anatomy-shade-1: oklch(0.86 0.006 260);
+  --anatomy-shade-2: oklch(0.91 0.005 260);
+  --anatomy-shade-3: oklch(0.95 0.004 95);
   --anatomy-lit-top: oklch(1 0 0);
-  --anatomy-lit-shade: oklch(0.95 0.03 66);
+  --anatomy-lit-shade: oklch(0.95 0.004 95);
 
-  --anatomy-hi: oklch(0.27 0.09 33);
-  --anatomy-mid: oklch(0.5 0.12 36);
-  --anatomy-lo: oklch(0.7 0.1 45);
-  --anatomy-faint: oklch(0.84 0.06 55);
+  --anatomy-hi: oklch(0.2 0.005 260);
+  --anatomy-mid: oklch(0.45 0.006 260);
+  --anatomy-lo: oklch(0.66 0.006 260);
+  --anatomy-faint: oklch(0.82 0.005 260);
   --anatomy-lit: var(--db-accent);
-  --anatomy-dot: oklch(0.27 0.09 33);
-  --anatomy-red: oklch(0.56 0.23 27);
-  --anatomy-halo: oklch(0.28 0.12 33);
-  --anatomy-halo-opacity: 0.5;
+  --anatomy-dot: oklch(0.2 0.005 260);
+  --anatomy-red: oklch(0.58 0.22 27);
+  --anatomy-halo: oklch(0 0 0);
+  --anatomy-halo-opacity: 0.7;
   --anatomy-weight: 0.7px;
 
   margin: 0;
@@ -83,7 +85,7 @@
 
 /* Needle: thicker than texture lines, in the accent */
 .db-svg .db-needle {
-  stroke: var(--db-accent);
+  stroke: var(--db-needle);
   stroke-width: 1.3;
 }
 .db-svg .db-overload {
@@ -115,10 +117,10 @@
 }
 .db-svg [data-wire][data-on] .tb-body,
 .db-svg [data-wire][data-on] .tb-shine {
-  fill: color-mix(in oklch, var(--db-accent) 42%, var(--anatomy-face));
+  fill: color-mix(in oklch, var(--db-accent) 75%, var(--anatomy-face));
 }
 .db-svg [data-wire][data-on] .tb-shade {
-  fill: color-mix(in oklch, var(--db-accent) 62%, var(--anatomy-face));
+  fill: color-mix(in oklch, var(--db-accent) 80%, black);
 }
 
 /* Lamp */
@@ -147,7 +149,7 @@
   transition: fill 0.3s;
 }
 .db-svg [data-load="2"][data-on] .db-led {
-  fill: var(--db-accent);
+  fill: var(--anatomy-red);
 }
 
 /* Heater element glows through the coil when live */
@@ -155,7 +157,7 @@
   transition: stroke 0.8s;
 }
 .db-svg [data-load="3"][data-on] .db-coil {
-  stroke: var(--db-accent);
+  stroke: var(--db-heat);
 }
 
 @media (prefers-reduced-motion: reduce) {
