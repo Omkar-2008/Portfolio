@@ -6,6 +6,8 @@
 @source "../src";
 @import "tw-animate-css";
 @import "lenis/dist/lenis.css";
+@import "./iso.css";
+@import "./components/figures/db-board/db-board.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,7 +86,9 @@
   --grid-line: oklch(1 0 0 / 0.14);
   --ink: oklch(0.16 0.02 40);
   --ink-foreground: oklch(0.98 0.004 60);
-  --ink-2: oklch(0.185 0.035 36); /* card surface on the ember frame (hero contact-card ink, warmed) */
+  --ink-2: oklch(
+    0.185 0.035 36
+  ); /* card surface on the ember frame (hero contact-card ink, warmed) */
   --bone: oklch(0.975 0.008 60); /* inset surface on paper */
   --paper: oklch(0.995 0.003 60);
   --paper-foreground: oklch(0.18 0.02 40);
@@ -114,7 +118,8 @@
     linear-gradient(160deg, var(--flame) 0%, var(--primary) 45%, var(--blaze) 100%);
   --gradient-frame: radial-gradient(80% 60% at 50% 40%, oklch(0.3 0.11 34) 0%, var(--ember) 70%);
 
-  --shadow-float: 0 30px 60px -20px oklch(0.2 0.08 33 / 0.55), 0 8px 18px -8px oklch(0.2 0.08 33 / 0.35);
+  --shadow-float:
+    0 30px 60px -20px oklch(0.2 0.08 33 / 0.55), 0 8px 18px -8px oklch(0.2 0.08 33 / 0.35);
   --shadow-ink: 0 30px 60px -18px oklch(0.12 0.05 33 / 0.7);
 
   --chart-1: var(--blaze);
@@ -335,4 +340,14 @@
 .js [data-reveal],
 .js [data-reveal-item] {
   visibility: hidden;
+}
+
+/* Hairline figures in the skill cards: plate matches the card, highlight in brand orange */
+.skill-figure-light {
+  --hairline-plate: var(--paper);
+  --hairline-hi: var(--primary);
+}
+.skill-figure-dark {
+  --hairline-plate: var(--ink);
+  --hairline-hi: var(--flame);
 }

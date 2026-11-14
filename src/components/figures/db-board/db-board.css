@@ -1,0 +1,113 @@
+/* Fig 01 — distribution trainer board. Scoped to .db-figure; kit tokens come from src/iso.css. */
+
+.db-figure {
+  --db-accent: oklch(0.64 0.21 38); /* brand orange: the one lit part (needle) and live circuits */
+  --db-warm: oklch(0.86 0.15 75);
+  --anatomy-lit: var(--db-accent);
+  margin: 0;
+}
+
+.db-figure .db-plate {
+  padding: 40px 14px 38px;
+  border-radius: 1rem;
+  box-shadow: none;
+}
+.db-figure .iso-plate-corners {
+  inset: 16px 18px;
+}
+.db-figure .iso-plate-corner {
+  font-size: 10px;
+}
+.db-figure .iso-plate-corner[data-corner="hint"] {
+  bottom: 0;
+}
+.db-figure .iso-stage {
+  outline: none;
+  border-radius: 0.6rem;
+}
+.db-figure .iso-stage:focus-visible {
+  box-shadow: 0 0 0 2px var(--db-accent);
+}
+
+/* Needle: thicker than texture lines, in the accent */
+.db-svg .db-needle {
+  stroke: var(--db-accent);
+  stroke-width: 1.3;
+}
+.db-svg .db-overload {
+  stroke: var(--anatomy-red);
+  stroke-width: 1.4;
+  opacity: 0.75;
+}
+
+/* Breakers are buttons */
+.db-svg [data-breaker] {
+  cursor: pointer;
+}
+.db-svg [data-breaker]:hover .iso-top {
+  fill: color-mix(in oklch, var(--db-accent) 14%, var(--anatomy-top));
+}
+/* Contact-state flag: grey when OFF, red when ON, as on a real MCB */
+.db-svg .db-flag {
+  fill: var(--anatomy-lo);
+  transition: fill 0.2s;
+}
+.db-svg [data-breaker][data-on] .db-flag {
+  fill: var(--anatomy-red);
+  stroke: var(--anatomy-red);
+}
+
+/* Cables: energised runs darken to the accent */
+.db-svg [data-wire] .tb-body {
+  transition: fill 0.35s;
+}
+.db-svg [data-wire][data-on] .tb-body,
+.db-svg [data-wire][data-on] .tb-shine {
+  fill: color-mix(in oklch, var(--db-accent) 42%, var(--anatomy-face));
+}
+.db-svg [data-wire][data-on] .tb-shade {
+  fill: color-mix(in oklch, var(--db-accent) 62%, var(--anatomy-face));
+}
+
+/* Lamp */
+.db-svg .db-glow {
+  fill: var(--db-warm);
+  opacity: 0;
+  filter: blur(6px);
+  transition: opacity 0.5s;
+}
+.db-svg [data-load="1"][data-on] .db-glow {
+  opacity: 0.85;
+}
+.db-svg [data-load="1"][data-on] .db-bulb :is(.iso-shade, .iso-top, .iso-fill) {
+  fill: color-mix(in oklch, var(--db-warm) 70%, white);
+  stroke: color-mix(in oklch, var(--db-warm) 70%, white);
+}
+
+/* Socket holes and pilot lamp */
+.db-svg .db-hole {
+  fill: var(--anatomy-hi);
+  stroke: none;
+  opacity: 0.75;
+}
+.db-svg .db-led {
+  fill: var(--anatomy-lo);
+  transition: fill 0.3s;
+}
+.db-svg [data-load="2"][data-on] .db-led {
+  fill: var(--db-accent);
+}
+
+/* Heater element glows through the coil when live */
+.db-svg .db-coil {
+  transition: stroke 0.8s;
+}
+.db-svg [data-load="3"][data-on] .db-coil {
+  stroke: var(--db-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .db-svg * {
+    transition: none !important;
+  }
+}

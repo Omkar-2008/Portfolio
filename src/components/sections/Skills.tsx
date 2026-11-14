@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ClipboardCheck, Cpu, PenTool, PlugZap, type LucideIcon } from "lucide-react";
+import { Format, Hub, Loupe, Plug } from "@lucasmarkes/hairline/react";
 
 import { Counter } from "@/components/motion/Counter";
 import { SKILL_GROUPS, TOOLCHAIN, type SkillGroup } from "@/data/profile";
@@ -18,6 +19,26 @@ const ICONS: Record<SkillGroup["icon"], LucideIcon> = {
   testing: ClipboardCheck,
 };
 
+/**
+ * Hairline figures (MIT, hairline.lucasmarkes.com): one per discipline, each a
+ * small machine that answers the pointer and plays on its own until touched.
+ */
+const FIGURES: Record<SkillGroup["icon"], { Figure: typeof Plug; label: string }> = {
+  drafting: {
+    Figure: Format,
+    label: "Crooked lines snapping square to their indents, like a drawing being drafted",
+  },
+  wiring: { Figure: Plug, label: "A wall socket with a plug drawn up towards it on its cord" },
+  embedded: {
+    Figure: Hub,
+    label: "A hub with eight linked tiles, like a microcontroller and its sensors",
+  },
+  testing: {
+    Figure: Loupe,
+    label: "A stand loupe passing over a ruled sheet, inspecting it line by line",
+  },
+};
+
 /** Checkerboard of light and dark cards on the orange canvas. */
 const CARD_TONE = ["light", "dark", "dark", "light"] as const;
 
@@ -29,7 +50,8 @@ export function Skills() {
         accentClass="text-ink"
         aside={
           <p className="max-w-sm text-sm leading-relaxed text-on-canvas/85">
-            Four disciplines I practise across drafting, installation, embedded control and quality assurance.
+            Four disciplines I practise across drafting, installation, embedded control and quality
+            assurance.
           </p>
         }
       />
@@ -71,6 +93,8 @@ type SkillCardProps = { group: SkillGroup; index: number; tone: "light" | "dark"
 function SkillCard({ group, index, tone }: SkillCardProps) {
   const ref = useRef<HTMLElement>(null);
   const Icon = ICONS[group.icon];
+  const figure = FIGURES[group.icon];
+  const Figure = figure.Figure;
   const dark = tone === "dark";
 
   useGSAP(
@@ -101,29 +125,32 @@ function SkillCard({ group, index, tone }: SkillCardProps) {
         dark ? "bg-ink text-ink-foreground" : "bg-paper text-paper-foreground"
       }`}
     >
-      {/* Oversized index in the background */}
-      <span
-        aria-hidden
-        className={`type-mega pointer-events-none absolute -right-3 -top-4 select-none text-[9rem] transition-colors duration-500 sm:text-[11rem] ${
-          dark ? "text-on-canvas/[0.04] group-hover:text-primary/15" : "text-paper-foreground/[0.04] group-hover:text-primary/15"
-        }`}
-      >
-        0{index + 1}
-      </span>
-
-      <div className="relative flex items-center gap-4">
-        <span className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-500 group-hover:-rotate-6">
-          <Icon className="size-5" />
-        </span>
-        <p className={`type-eyebrow text-[0.62rem] ${dark ? "text-ink-foreground/50" : "text-paper-foreground/50"}`}>
-          Discipline 0{index + 1}
-        </p>
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <span className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-500 group-hover:-rotate-6">
+            <Icon className="size-5" />
+          </span>
+          <p
+            className={`type-eyebrow text-[0.62rem] ${dark ? "text-ink-foreground/50" : "text-paper-foreground/50"}`}
+          >
+            Discipline 0{index + 1}
+          </p>
+        </div>
+        <Figure
+          play
+          intensity={0.6}
+          theme={dark ? "dark" : "light"}
+          label={figure.label}
+          className={`skill-figure -mr-2 -mt-2 size-28 shrink-0 sm:size-32 lg:-mr-4 lg:-mt-4 lg:size-40 ${dark ? "skill-figure-dark" : "skill-figure-light"}`}
+        />
       </div>
 
       <h3 className="relative mt-6 font-display text-[clamp(1.6rem,2.8vw,2.4rem)] font-black uppercase leading-[0.95] tracking-[-0.025em]">
         {group.title}
       </h3>
-      <p className={`relative mt-3 max-w-md text-sm leading-relaxed ${dark ? "text-ink-foreground/65" : "text-paper-foreground/65"}`}>
+      <p
+        className={`relative mt-3 max-w-md text-sm leading-relaxed ${dark ? "text-ink-foreground/65" : "text-paper-foreground/65"}`}
+      >
         {group.description}
       </p>
 
