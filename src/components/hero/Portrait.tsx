@@ -39,7 +39,7 @@ export function Portrait({ src, className = "" }: PortraitProps) {
           d="M200 60c52 0 88 40 88 96 0 38-16 70-40 88v22c0 10 6 18 16 22l64 26c42 17 72 58 72 104v82H0v-82c0-46 30-87 72-104l64-26c10-4 16-12 16-22v-22c-24-18-40-50-40-88 0-56 36-96 88-96z"
         />
       </svg>
-      <div className="absolute inset-x-0 bottom-[18%] flex justify-center">
+      <div className="absolute inset-x-0 top-[38%] flex justify-center">
         <span className="type-eyebrow rounded-full border border-on-canvas/40 px-3 py-1.5 text-on-canvas/80">
           Portrait coming soon
         </span>

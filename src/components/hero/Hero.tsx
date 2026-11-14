@@ -111,7 +111,7 @@ export function Hero() {
             © 2026
           </p>
           <h1 className="sr-only">Omkar Potnuru — Electrical &amp; Electronics Engineering</h1>
-          <p aria-hidden className="type-mega flex overflow-hidden pb-[0.04em] text-[26vw] text-on-canvas lg:text-[clamp(8rem,14vw,16rem)]">
+          <p aria-hidden className="type-mega flex overflow-hidden pb-[0.04em] text-[23vw] text-on-canvas lg:text-[clamp(8rem,14vw,16rem)]">
             {NAME.split("").map((ch, i) => (
               <span key={i} data-reveal className="name-char inline-block">
                 {ch}
@@ -148,15 +148,15 @@ export function Hero() {
         </div>
 
         {/* Floating contact card */}
-        <div data-reveal className="float-card absolute bottom-6 right-6 z-20 hidden w-[21rem] md:block lg:bottom-10 lg:right-10 xl:w-[23rem]">
+        <div data-reveal className="float-card absolute bottom-6 right-6 z-20 hidden w-[21rem] lg:block lg:bottom-10 lg:right-10 xl:w-[23rem]">
           <div className="float-card-inner">
             <ContactCard thumbnail={PORTRAIT_SRC} />
           </div>
         </div>
       </div>
 
-      {/* Mobile: cards flow beneath the canvas */}
-      <div className="mt-2 grid gap-2 md:hidden">
+      {/* Phone & tablet: contact card flows beneath the canvas */}
+      <div className="mt-2 grid gap-2 lg:hidden">
         <ContactCard thumbnail={PORTRAIT_SRC} />
       </div>
     </section>
