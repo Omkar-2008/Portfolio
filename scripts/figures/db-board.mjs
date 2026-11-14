@@ -91,7 +91,8 @@ const L = (d, style) => k.lineSvg(d, style);
 const D = (points, style) => k.dotsSvg(points, style);
 const depth = (x, y, z = 0) => k.depthOf([x, y, z], P);
 const byDepth = (points) => [...points].sort((a, b) => depth(a[0], a[1]) - depth(b[0], b[1]));
-const screw = (x, y, z, r = 1.6) => L(k.ring(x, y, r, z, P, 14), { tone: "lo" }) + D([at([x, y, z])], { size: 0.45 });
+const screw = (x, y, z, r = 1.6) =>
+  L(k.ring(x, y, r, z, P, 14), { tone: "lo" }) + D([at([x, y, z])], { size: 0.45 });
 
 /* ---------------- Parts ---------------- */
 
@@ -99,9 +100,16 @@ function board() {
   const out = [`<path class="iso-halo" d="${k.haloOf(BOARD, -BOARD_H - FOOT_H, BOARD_H, P)}"/>`];
   for (const [x, y] of byDepth(k.corners(BOARD, 18))) {
     out.push(S(k.cylinder(x, y, 7, -BOARD_H - FOOT_H, 1.4, P, 28), { tone: "lo" }));
-    out.push(S(k.cylinder(x, y, 5.4, -BOARD_H - FOOT_H + 1.4, FOOT_H - 1.4, P, 28), { tone: "mid" }));
+    out.push(
+      S(k.cylinder(x, y, 5.4, -BOARD_H - FOOT_H + 1.4, FOOT_H - 1.4, P, 28), { tone: "mid" }),
+    );
   }
-  out.push(S(k.slabOf(BOARD, -BOARD_H, BOARD_H, P, 8, 1.4), { tone: "mid", inner: L(k.sideSeam(BOARD, -3, P, 8), { tone: "faint" }) }));
+  out.push(
+    S(k.slabOf(BOARD, -BOARD_H, BOARD_H, P, 8, 1.4), {
+      tone: "mid",
+      inner: L(k.sideSeam(BOARD, -3, P, 8), { tone: "faint" }),
+    }),
+  );
   out.push(L(k.planOutline(k.insetPlan(BOARD, 5), 0, P), { tone: "faint" }));
   const corners = k.corners(BOARD, 10);
   out.push(corners.map(([x, y]) => screw(x, y, 0, 2.2)).join(""));
@@ -109,20 +117,50 @@ function board() {
   // Ruler strip along the front edge: ticks hang from its inner edge
   const strip = { x: -128, y: BOARD.y + BOARD.d - 14, w: 192, d: 7, r: 1 };
   out.push(S(k.slabOf(strip, 0, 0.6, P, 3), { tone: "lo", crease: "none" }));
-  const ticks = k.topTicks(strip.x + 4, strip.x + strip.w - 4, 4, 5, strip.y + 0.8, 0.6, [2, 3.6], P);
+  const ticks = k.topTicks(
+    strip.x + 4,
+    strip.x + strip.w - 4,
+    4,
+    5,
+    strip.y + 0.8,
+    0.6,
+    [2, 3.6],
+    P,
+  );
   out.push(L(ticks.minor, { tone: "lo" }), L(ticks.major, { tone: "mid" }));
-  out.push(D([at([strip.x + 2, strip.y + 3.5, 0.6]), at([strip.x + strip.w - 2, strip.y + 3.5, 0.6])], { size: 0.4 }));
+  out.push(
+    D([at([strip.x + 2, strip.y + 3.5, 0.6]), at([strip.x + strip.w - 2, strip.y + 3.5, 0.6])], {
+      size: 0.4,
+    }),
+  );
 
   // Label plate, front right: three rule lines stand for printed text
   const plate = { x: 92, y: 40, w: 44, d: 26, r: 2 };
   out.push(S(k.slabOf(plate, 0, 0.8, P, 4), { tone: "lo", crease: "none" }));
   out.push(L(k.planOutline(k.insetPlan(plate, 1.8), 0.8, P, 4), { tone: "faint" }));
   out.push(
-    L(k.lineOnTop([plate.x + 6, plate.y + 8], [plate.x + 34, plate.y + 8], 0.8, P), { tone: "mid", free: true }),
-    L(k.lineOnTop([plate.x + 6, plate.y + 13], [plate.x + 28, plate.y + 13], 0.8, P), { tone: "lo", free: true }),
-    L(k.lineOnTop([plate.x + 6, plate.y + 18], [plate.x + 20, plate.y + 18], 0.8, P), { tone: "lo", free: true }),
+    L(k.lineOnTop([plate.x + 6, plate.y + 8], [plate.x + 34, plate.y + 8], 0.8, P), {
+      tone: "mid",
+      free: true,
+    }),
+    L(k.lineOnTop([plate.x + 6, plate.y + 13], [plate.x + 28, plate.y + 13], 0.8, P), {
+      tone: "lo",
+      free: true,
+    }),
+    L(k.lineOnTop([plate.x + 6, plate.y + 18], [plate.x + 20, plate.y + 18], 0.8, P), {
+      tone: "lo",
+      free: true,
+    }),
   );
-  out.push(D([at([plate.x + 3.4, plate.y + 3.4, 0.8]), at([plate.x + plate.w - 3.4, plate.y + plate.d - 3.4, 0.8])], { size: 0.45 }));
+  out.push(
+    D(
+      [
+        at([plate.x + 3.4, plate.y + 3.4, 0.8]),
+        at([plate.x + plate.w - 3.4, plate.y + plate.d - 3.4, 0.8]),
+      ],
+      { size: 0.45 },
+    ),
+  );
 
   // Mounting slots along the back edge: closed outlines, so nothing ends in the air
   for (const x of [-60, 0, 40]) {
@@ -149,26 +187,68 @@ function wires() {
   ];
   const out = [];
   // 1 Lighting → lamp holder
-  out.push(cable([...rise(centre(1)), [centre(1), 6, z], [LAMP[0], 6, z], [LAMP[0], LAMP[1] - 12, z]], { part: "1" }));
+  out.push(
+    cable([...rise(centre(1)), [centre(1), 6, z], [LAMP[0], 6, z], [LAMP[0], LAMP[1] - 12, z]], {
+      part: "1",
+    }),
+  );
   // 2 Sockets → socket plate
   out.push(cable([...rise(centre(2)), [centre(2), SOCKET.y, z]], { part: "2" }));
   // 3 Heater → heater base
-  out.push(cable([...rise(centre(3)), [centre(3), -4, z], [-14, -4, z], [-14, HEATER.y, z]], { part: "3" }));
+  out.push(
+    cable([...rise(centre(3)), [centre(3), -4, z], [-14, -4, z], [-14, HEATER.y, z]], {
+      part: "3",
+    }),
+  );
   // 4 Motor → motor base
-  out.push(cable([...rise(centre(4)), [centre(4), -16, z], [MOTOR[0] - 4, -16, z], [MOTOR[0] - 4, MOTOR_BASE.y, z]], { part: "4" }));
+  out.push(
+    cable(
+      [
+        ...rise(centre(4)),
+        [centre(4), -16, z],
+        [MOTOR[0] - 4, -16, z],
+        [MOTOR[0] - 4, MOTOR_BASE.y, z],
+      ],
+      { part: "4" },
+    ),
+  );
   // Meter leads: from the neutral bar's end to the meter base
-  out.push(cable([[NEUTRAL.x + NEUTRAL.w, NEUTRAL.y + 3, 3], [METER_BASE.x - 8, NEUTRAL.y + 3, 3], [METER_BASE.x, NEUTRAL.y + 3, 3]], { tone: "lo" }));
+  out.push(
+    cable(
+      [
+        [NEUTRAL.x + NEUTRAL.w, NEUTRAL.y + 3, 3],
+        [METER_BASE.x - 8, NEUTRAL.y + 3, 3],
+        [METER_BASE.x, NEUTRAL.y + 3, 3],
+      ],
+      { tone: "lo" },
+    ),
+  );
   // Supply cable: a gland on the left edge into the isolator's left face
-  out.push(cable([[BOARD.x + 6, -52, 4], [BREAKERS[0].x, -52, 4]], { tone: "hi", part: "0" }));
+  out.push(
+    cable(
+      [
+        [BOARD.x + 6, -52, 4],
+        [BREAKERS[0].x, -52, 4],
+      ],
+      { tone: "hi", part: "0" },
+    ),
+  );
   return out.join("");
 }
 
 function rail() {
   const out = [S(k.slabOf(RAIL, 0, 2.5, P, 2, 0.3), { tone: "mid" })];
-  out.push(L(k.lineOnTop([RAIL.x, RAIL.y + 5], [RAIL.x + RAIL.w, RAIL.y + 5], 2.5, P), { tone: "faint" }));
-  out.push(screw(RAIL.x + 3, RAIL.y + 5, 2.5, 1.2), screw(RAIL.x + RAIL.w - 3, RAIL.y + 5, 2.5, 1.2));
+  out.push(
+    L(k.lineOnTop([RAIL.x, RAIL.y + 5], [RAIL.x + RAIL.w, RAIL.y + 5], 2.5, P), { tone: "faint" }),
+  );
+  out.push(
+    screw(RAIL.x + 3, RAIL.y + 5, 2.5, 1.2),
+    screw(RAIL.x + RAIL.w - 3, RAIL.y + 5, 2.5, 1.2),
+  );
   // Cable gland on the board's left edge
-  out.push(S(k.slabOf({ x: BOARD.x + 1, y: -58, w: 6, d: 12, r: 1.5 }, 0, 8, P, 3, 0.4), { tone: "mid" }));
+  out.push(
+    S(k.slabOf({ x: BOARD.x + 1, y: -58, w: 6, d: 12, r: 1.5 }, 0, 8, P, 3, 0.4), { tone: "mid" }),
+  );
   return out.join("");
 }
 
@@ -177,24 +257,53 @@ function breaker(index) {
   const out = [];
   const body = { x, y: BODY_Y, w, d: BODY_D, r: 1.2 };
   const shoulder = { x: x + 0.6, y: -61, w: w - 1.2, d: 17, r: 1 };
-  out.push(S(k.slabOf(body, 2.5, 11.5, P, 3, 0.5), { tone: "hi", crease: "lo", inner: L(k.sideSeam(body, 8, P, 3), { tone: "faint" }) }));
+  out.push(
+    S(k.slabOf(body, 2.5, 11.5, P, 3, 0.5), {
+      tone: "hi",
+      crease: "lo",
+      inner: L(k.sideSeam(body, 8, P, 3), { tone: "faint" }),
+    }),
+  );
   out.push(S(k.slabOf(shoulder, 14, SHOULDER_TOP - 14, P, 3, 0.4), { tone: "hi", crease: "lo" }));
   // Terminal screws front and back, each in its own well
   for (const y of [BODY_Y + 2.6, FRONT_Y - 2.6]) {
     for (let pole = 0; pole < w / MOD; pole++) {
       const cx = x + MOD / 2 + pole * MOD;
-      out.push(L(k.planOutline({ x: cx - 3, y: y - 1.8, w: 6, d: 3.6, r: 1 }, 14, P, 3), { tone: "faint" }));
+      out.push(
+        L(k.planOutline({ x: cx - 3, y: y - 1.8, w: 6, d: 3.6, r: 1 }, 14, P, 3), {
+          tone: "faint",
+        }),
+      );
       out.push(D([at([cx, y, 14])], { size: 0.5 }));
     }
   }
   // Lever slot and the rating window on the shoulder
-  out.push(L(k.planOutline({ x: x + w / 2 - 3.6, y: LEVER_OFF - 3, w: 7.2, d: LEVER_THROW + 6, r: 1.2 }, SHOULDER_TOP, P, 3), { tone: "lo" }));
-  out.push(L(k.planOutline({ x: x + 2.4, y: -48.4, w: w - 4.8, d: 3, r: 0.6 }, SHOULDER_TOP, P, 2), { tone: "faint" }));
+  out.push(
+    L(
+      k.planOutline(
+        { x: x + w / 2 - 3.6, y: LEVER_OFF - 3, w: 7.2, d: LEVER_THROW + 6, r: 1.2 },
+        SHOULDER_TOP,
+        P,
+        3,
+      ),
+      { tone: "lo" },
+    ),
+  );
+  out.push(
+    L(k.planOutline({ x: x + 2.4, y: -48.4, w: w - 4.8, d: 3, r: 0.6 }, SHOULDER_TOP, P, 2), {
+      tone: "faint",
+    }),
+  );
   // ON/OFF state flag (a small window that shows the contact state)
-  out.push(`<path data-flag="${index}" class="iso-line db-flag" data-tone="lo" d="${k.planOutline({ x: x + w - 4.4, y: -59, w: 2.4, d: 2.4, r: 0.6 }, SHOULDER_TOP, P, 2)}"/>`);
+  out.push(
+    `<path data-flag="${index}" class="iso-line db-flag" data-tone="lo" d="${k.planOutline({ x: x + w - 4.4, y: -59, w: 2.4, d: 2.4, r: 0.6 }, SHOULDER_TOP, P, 2)}"/>`,
+  );
   // Lever, built OFF and moved by the live code
   const lever = { x: x + w / 2 - 2.8, y: LEVER_OFF - 1.6, w: 5.6, d: 3.2, r: 1 };
-  const leverSvg = S(k.slabOf(lever, SHOULDER_TOP, LEVER_H, P, 2, 0.3), { tone: "hi", crease: "lo" });
+  const leverSvg = S(k.slabOf(lever, SHOULDER_TOP, LEVER_H, P, 2, 0.3), {
+    tone: "hi",
+    crease: "lo",
+  });
   out.push(`<g data-lever="${index}">${leverSvg}</g>`);
   return `<g data-breaker="${index}" class="db-breaker">${out.join("")}</g>`;
 }
@@ -202,26 +311,53 @@ function breaker(index) {
 function bar(plan, kind) {
   const out = [];
   for (const sx of [plan.x + 3, plan.x + plan.w - 9]) {
-    out.push(S(k.slabOf({ x: sx, y: plan.y - 0.5, w: 6, d: plan.d + 1, r: 1 }, 0, 5, P, 2, 0.3), { tone: "lo" }));
+    out.push(
+      S(k.slabOf({ x: sx, y: plan.y - 0.5, w: 6, d: plan.d + 1, r: 1 }, 0, 5, P, 2, 0.3), {
+        tone: "lo",
+      }),
+    );
   }
-  out.push(S(k.slabOf(plan, 5, 3.5, P, 2, 0.4), { tone: kind === "earth" ? "mid" : "hi", crease: "lo" }));
+  out.push(
+    S(k.slabOf(plan, 5, 3.5, P, 2, 0.4), { tone: kind === "earth" ? "mid" : "hi", crease: "lo" }),
+  );
   const holes = [];
   for (let i = 0; i < 7; i++) holes.push([plan.x + 6 + i * 6, plan.y + plan.d / 2]);
-  out.push(D(holes.map(([hx, hy]) => at([hx, hy, 8.5])), { size: 0.55 }));
+  out.push(
+    D(
+      holes.map(([hx, hy]) => at([hx, hy, 8.5])),
+      { size: 0.55 },
+    ),
+  );
   out.push(L(holes.map(([hx, hy]) => k.ring(hx, hy, 1.5, 8.5, P, 12)).join(""), { tone: "lo" }));
   return out.join("");
 }
 
 function meter() {
   const [x, y] = METER;
-  const out = [`<path class="iso-halo" d="${k.haloOf(k.insetPlan(METER_BASE, 2), 0, 0.1, P)}" style="filter:blur(3px)"/>`];
+  const out = [
+    `<path class="iso-halo" d="${k.haloOf(k.insetPlan(METER_BASE, 2), 0, 0.1, P)}" style="filter:blur(3px)"/>`,
+  ];
   out.push(S(k.slabOf(METER_BASE, 0, METER_Z, P, 6, 0.8), { tone: "mid" }));
-  out.push(k.corners(METER_BASE, 4.5).map(([cx, cy]) => screw(cx, cy, METER_Z, 1.4)).join(""));
+  out.push(
+    k
+      .corners(METER_BASE, 4.5)
+      .map(([cx, cy]) => screw(cx, cy, METER_Z, 1.4))
+      .join(""),
+  );
   // Terminal posts on the base, where the meter leads land
-  out.push(S(k.cylinder(METER_BASE.x + 5, METER_BASE.y + 10, 2.2, METER_Z, 3, P, 16), { tone: "mid" }));
-  out.push(S(k.cylinder(METER_BASE.x + 5, METER_BASE.y + 17, 2.2, METER_Z, 3, P, 16), { tone: "mid" }));
+  out.push(
+    S(k.cylinder(METER_BASE.x + 5, METER_BASE.y + 10, 2.2, METER_Z, 3, P, 16), { tone: "mid" }),
+  );
+  out.push(
+    S(k.cylinder(METER_BASE.x + 5, METER_BASE.y + 17, 2.2, METER_Z, 3, P, 16), { tone: "mid" }),
+  );
   // Bezel and dial face
-  out.push(S(k.cylinder(x, y, METER_R, METER_Z, METER_TOP - METER_Z, P, 72, 0.8), { tone: "hi", crease: "lo" }));
+  out.push(
+    S(k.cylinder(x, y, METER_R, METER_Z, METER_TOP - METER_Z, P, 72, 0.8), {
+      tone: "hi",
+      crease: "lo",
+    }),
+  );
   out.push(L(k.knurl(x, y, METER_R, METER_TOP - 3, METER_TOP, 90, P, 0.3), { tone: "lo" }));
   out.push(L(k.sideArc(x, y, METER_R, METER_TOP - 3, P, 40), { tone: "faint" }));
   out.push(L(k.ring(x, y, METER_R - 2.4, METER_TOP, P, 72), { tone: "lo" }));
@@ -241,7 +377,13 @@ function meter() {
     red.push([x + Math.sin(a) * (METER_R - 5.2), y - Math.cos(a) * (METER_R - 5.2)]);
   }
   out.push(`<path class="iso-line db-overload" d="${k.onTop(red, METER_TOP, P)}"/>`);
-  out.push(k.faceTextSvg(k.topMatrix([x + 2, y + 11], METER_TOP, P, "x"), "A", { size: 5, tone: "mid", anchor: "middle" }));
+  out.push(
+    k.faceTextSvg(k.topMatrix([x + 2, y + 11], METER_TOP, P, "x"), "A", {
+      size: 5,
+      tone: "mid",
+      anchor: "middle",
+    }),
+  );
   // Zero-adjust screw
   out.push(screw(x - 2, y + 15, METER_TOP, 1.4));
   return out.join("");
@@ -251,7 +393,12 @@ function needleAt(amps) {
   const [x, y] = METER;
   const a = ARC_FROM + (Math.max(-0.4, Math.min(FULL_SCALE + 0.6, amps)) / FULL_SCALE) * ARC_SPAN;
   const reach = METER_R - 5;
-  return k.lineOnTop([x - Math.sin(a) * 4, y + Math.cos(a) * 4], [x + Math.sin(a) * reach, y - Math.cos(a) * reach], METER_TOP + 0.3, P);
+  return k.lineOnTop(
+    [x - Math.sin(a) * 4, y + Math.cos(a) * 4],
+    [x + Math.sin(a) * reach, y - Math.cos(a) * reach],
+    METER_TOP + 0.3,
+    P,
+  );
 }
 
 function lamp() {
@@ -259,14 +406,19 @@ function lamp() {
   const base = { x: x - 12, y: y - 12, w: 24, d: 24, r: 3 };
   const out = [];
   out.push(S(k.slabOf(base, 0, 5, P, 4, 0.6), { tone: "mid" }));
-  out.push(screw(base.x + 4, base.y + 4, 5, 1.2), screw(base.x + base.w - 4, base.y + base.d - 4, 5, 1.2));
+  out.push(
+    screw(base.x + 4, base.y + 4, 5, 1.2),
+    screw(base.x + base.w - 4, base.y + base.d - 4, 5, 1.2),
+  );
   out.push(S(k.cylinder(x, y, 7.5, 5, 9, P, 40, 0.5), { tone: "mid" }));
   out.push(L(k.knurl(x, y, 7.5, 9, 14, 30, P), { tone: "lo" }));
   out.push(S(k.cylinder(x, y, 5, 14, 4, P, 32), { tone: "lo" }));
   out.push(L(k.sideArc(x, y, 5, 16, P, 20), { tone: "faint" }));
   // Soft glow sits behind the glass and only shows when the circuit is on
   const c = at([x, y, 27]);
-  out.push(`<circle class="db-glow" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="${(k.screenRise(1, P) * 22).toFixed(1)}"/>`);
+  out.push(
+    `<circle class="db-glow" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="${(k.screenRise(1, P) * 22).toFixed(1)}"/>`,
+  );
   out.push(`<g class="db-bulb">${S(G.sphereOf([x, y, 27], 9.5, P), { tone: "hi" })}</g>`);
   return `<g data-load="1">${out.join("")}</g>`;
 }
@@ -285,7 +437,9 @@ function socket() {
   // Rocker switch and its indicator
   const rocker = { x: SOCKET.x + 21, y: SOCKET.y + 8, w: 5, d: 12, r: 1 };
   out.push(S(k.slabOf(rocker, z, 2, P, 2, 0.3), { tone: "mid" }));
-  out.push(`<circle class="db-led" cx="${at([SOCKET.x + 23.5, SOCKET.y + 23, z])[0].toFixed(1)}" cy="${at([SOCKET.x + 23.5, SOCKET.y + 23, z])[1].toFixed(1)}" r="1.1"/>`);
+  out.push(
+    `<circle class="db-led" cx="${at([SOCKET.x + 23.5, SOCKET.y + 23, z])[0].toFixed(1)}" cy="${at([SOCKET.x + 23.5, SOCKET.y + 23, z])[1].toFixed(1)}" r="1.1"/>`,
+  );
   out.push(screw(SOCKET.x + 6, SOCKET.y + SOCKET.d - 6, z, 1.1));
   return `<g data-load="2">${out.join("")}</g>`;
 }
@@ -300,12 +454,25 @@ function heater() {
   out.push(L(k.sideArc(posts[0], cy, 3.6, 9, P, 14), { tone: "faint" }));
   const c = k.coil(posts[0], posts[1], [cy, cz], 3.3, 12, "x", P);
   out.push(`<path class="iso-line db-coil" data-tone="lo" d="${c.back}"/>`);
-  out.push(S(k.slabOf({ x: posts[0] + 3, y: cy - 1.2, w: posts[1] - posts[0] - 6, d: 2.4, r: 1 }, cz - 1.2, 2.4, P, 2), { tone: "lo", crease: "none" }));
+  out.push(
+    S(
+      k.slabOf(
+        { x: posts[0] + 3, y: cy - 1.2, w: posts[1] - posts[0] - 6, d: 2.4, r: 1 },
+        cz - 1.2,
+        2.4,
+        P,
+        2,
+      ),
+      { tone: "lo", crease: "none" },
+    ),
+  );
   out.push(`<path class="iso-line db-coil" data-tone="mid" d="${c.front}"/>`);
   out.push(S(k.cylinder(posts[1], cy, 3.6, 4, 15, P, 24, 0.4), { tone: "mid" }));
   out.push(L(k.sideArc(posts[1], cy, 3.6, 9, P, 14), { tone: "faint" }));
   // Terminal screws clamping the element's ends to each ceramic post
-  out.push(D([at([posts[0], cy + 3.3, cz]), at([posts[1], cy + 3.3, cz])], { size: 0.7, tone: "hi" }));
+  out.push(
+    D([at([posts[0], cy + 3.3, cz]), at([posts[1], cy + 3.3, cz])], { size: 0.7, tone: "hi" }),
+  );
   out.push(screw(HEATER.x + HEATER.w / 2, HEATER.y + HEATER.d - 4, 4, 1.1));
   return `<g data-load="3">${out.join("")}</g>`;
 }
@@ -314,17 +481,28 @@ function motor() {
   const [x, y] = MOTOR;
   const out = [];
   out.push(S(k.slabOf(MOTOR_BASE, 0, 4, P, 3, 0.5), { tone: "lo" }));
-  out.push(k.corners(MOTOR_BASE, 4).map(([cx, cy]) => screw(cx, cy, 4, 1.3)).join(""));
+  out.push(
+    k
+      .corners(MOTOR_BASE, 4)
+      .map(([cx, cy]) => screw(cx, cy, 4, 1.3))
+      .join(""),
+  );
   out.push(S(k.cylinder(x, y, 14, 4, 3, P, 56), { tone: "mid" }));
   out.push(S(k.cylinder(x, y, 12.5, 7, 24, P, 56, 0.6), { tone: "hi", crease: "lo" }));
   out.push(L(k.knurl(x, y, 12.5, 10, 28, 30, P, 0.3), { tone: "lo" }));
-  out.push(L(k.sideArc(x, y, 12.5, 10, P, 30) + k.sideArc(x, y, 12.5, 28, P, 30), { tone: "faint" }));
+  out.push(
+    L(k.sideArc(x, y, 12.5, 10, P, 30) + k.sideArc(x, y, 12.5, 28, P, 30), { tone: "faint" }),
+  );
   // Terminal box on the +x side
-  out.push(S(k.slabOf({ x: x + 11, y: y - 6, w: 7, d: 12, r: 1 }, 12, 10, P, 2, 0.4), { tone: "mid" }));
+  out.push(
+    S(k.slabOf({ x: x + 11, y: y - 6, w: 7, d: 12, r: 1 }, 12, 10, P, 2, 0.4), { tone: "mid" }),
+  );
   out.push(D([at([x + 14.5, y - 3, 22]), at([x + 14.5, y + 3, 22])], { size: 0.45 }));
   out.push(S(k.cylinder(x, y, 10, 31, 4, P, 48, 0.5), { tone: "mid" }));
   out.push(S(k.cylinder(x, y, 1.8, 35, PULLEY_Z - 35 - 4, P, 16), { tone: "mid", crease: "none" }));
-  out.push(S(k.cylinder(x, y, PULLEY_R, PULLEY_Z - 4, 4, P, 40, 0.4), { tone: "hi", crease: "lo" }));
+  out.push(
+    S(k.cylinder(x, y, PULLEY_R, PULLEY_Z - 4, 4, P, 40, 0.4), { tone: "hi", crease: "lo" }),
+  );
   out.push(L(k.sideArc(x, y, PULLEY_R, PULLEY_Z - 2, P, 24), { tone: "lo" }));
   out.push(L(k.ring(x, y, 1.8, PULLEY_Z, P, 14), { tone: "mid" }));
   return `<g data-load="4">${out.join("")}</g>`;
@@ -333,21 +511,39 @@ function motor() {
 function pulleyMark(turn) {
   const [x, y] = MOTOR;
   const a = turn * Math.PI * 2;
-  return k.lineOnTop([x + Math.sin(a) * 2.4, y - Math.cos(a) * 2.4], [x + Math.sin(a) * (PULLEY_R - 1), y - Math.cos(a) * (PULLEY_R - 1)], PULLEY_Z, P);
+  return k.lineOnTop(
+    [x + Math.sin(a) * 2.4, y - Math.cos(a) * 2.4],
+    [x + Math.sin(a) * (PULLEY_R - 1), y - Math.cos(a) * (PULLEY_R - 1)],
+    PULLEY_Z,
+    P,
+  );
 }
 
 /* ---------------- Assemble ---------------- */
 
 const standing = [
   { key: depth(-80, BODY_Y + 14), svg: rail() },
-  ...BREAKERS.map((b, i) => ({ key: depth(b.x + b.w / 2, BODY_Y + 14) + 0.001 * i, svg: breaker(i) })),
+  ...BREAKERS.map((b, i) => ({
+    key: depth(b.x + b.w / 2, BODY_Y + 14) + 0.001 * i,
+    svg: breaker(i),
+  })),
   { key: depth(NEUTRAL.x + 24, NEUTRAL.y + 3), svg: bar(NEUTRAL, "neutral") },
   { key: depth(EARTH.x + 24, EARTH.y + 3), svg: bar(EARTH, "earth") },
-  { key: depth(METER[0], METER[1]), svg: meter() + `<path data-part="needle" class="iso-line db-needle" data-tone="lit" data-free="start" d="${needleAt(0)}"/>` },
+  {
+    key: depth(METER[0], METER[1]),
+    svg:
+      meter() +
+      `<path data-part="needle" class="iso-line db-needle" data-tone="lit" data-free="start" d="${needleAt(0)}"/>`,
+  },
   { key: depth(LAMP[0], LAMP[1]), svg: lamp() },
   { key: depth(SOCKET.x + 15, SOCKET.y + 15), svg: socket() },
   { key: depth(HEATER.x + 28, HEATER.y + 13), svg: heater() },
-  { key: depth(MOTOR[0], MOTOR[1]), svg: motor() + `<path data-part="pulley" class="iso-line" data-tone="mid" data-free="start" d="${pulleyMark(0)}"/>` },
+  {
+    key: depth(MOTOR[0], MOTOR[1]),
+    svg:
+      motor() +
+      `<path data-part="pulley" class="iso-line" data-tone="mid" data-free="start" d="${pulleyMark(0)}"/>`,
+  },
 ].sort((a, b) => a.key - b.key);
 
 const body = [board(), wires(), ...standing.map((item) => item.svg)].join("");
@@ -385,7 +581,13 @@ if (process.argv.includes("--page")) {
   const page = k.pageHtml({
     title: "Distribution trainer board",
     theme: process.argv.includes("--dark") ? "dark" : "light",
-    body: k.plateHtml({ fig: "Fig 01", title: "Distribution board", hint: "Click a breaker", readout: "0.0 A", body: `<div class="iso-stage">${svg}</div>` }),
+    body: k.plateHtml({
+      fig: "Fig 01",
+      title: "Distribution board",
+      hint: "Click a breaker",
+      readout: "0.0 A",
+      body: `<div class="iso-stage">${svg}</div>`,
+    }),
   });
   const pageOut = join(HERE, "db-board.preview.html");
   writeFileSync(pageOut, page);

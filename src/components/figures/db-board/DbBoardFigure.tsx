@@ -247,31 +247,25 @@ export function DbBoardFigure({ className = "" }: Props) {
 
   return (
     <figure className={`iso db-figure ${className}`} data-theme="light">
-      <div className="iso-plate db-plate">
-        <div className="iso-plate-corners" aria-hidden="true">
-          <span className="iso-plate-corner" data-corner="fig">
-            Fig 01
-          </span>
-          <span className="iso-plate-corner" data-corner="title">
-            Distribution board
-          </span>
-          <span className="iso-plate-corner" data-corner="hint">
-            Click a breaker
-          </span>
-          <span ref={readoutRef} className="iso-plate-corner" data-corner="readout" data-readout>
-            {RESTING_READOUT}
-          </span>
-        </div>
-        <div
-          ref={stageRef}
-          className="iso-stage"
-          tabIndex={0}
-          role="group"
-          aria-label="Distribution trainer board. Press 0 for the main isolator, 1 to 4 for the lighting, socket, heater and motor breakers."
-          aria-valuetext={RESTING_READOUT}
-          dangerouslySetInnerHTML={{ __html: DB_SVG }}
-        />
-      </div>
+      <div
+        ref={stageRef}
+        className="iso-stage"
+        tabIndex={0}
+        role="group"
+        aria-label="Distribution trainer board. Press 0 for the main isolator, 1 to 4 for the lighting, socket, heater and motor breakers."
+        aria-valuetext={RESTING_READOUT}
+        dangerouslySetInnerHTML={{ __html: DB_SVG }}
+      />
+      {/* Caption rule under the drawing, like an instrument label */}
+      <figcaption className="db-caption">
+        <span className="db-caption-title">
+          <span className="db-caption-fig">Fig 01</span>Distribution board
+        </span>
+        <span ref={readoutRef} className="db-caption-readout" data-readout aria-live="off">
+          {RESTING_READOUT}
+        </span>
+        <span className="db-caption-hint">Click a breaker · keys 0–4</span>
+      </figcaption>
     </figure>
   );
 }

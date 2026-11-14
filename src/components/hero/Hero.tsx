@@ -319,9 +319,9 @@ export function Hero() {
       {/* One live figure: floats in the canvas on desktop, flows below it on smaller screens */}
       <div
         data-reveal
-        className="float-card mt-2 lg:absolute lg:right-10 lg:top-[14%] lg:z-30 lg:mt-0 lg:w-[23rem] xl:right-14 xl:w-[27rem] 2xl:w-[30rem]"
+        className="float-card mt-2 rounded-[3px] border border-on-canvas/40 bg-canvas px-4 pb-5 pt-3 sm:px-8 lg:absolute lg:right-8 lg:top-[31%] lg:z-30 lg:mt-0 lg:w-[25rem] lg:rounded-none lg:border-0 lg:bg-none lg:p-0 xl:right-12 xl:w-[30rem] 2xl:w-[34rem]"
       >
-        <DbBoardFigure className="shadow-float [&_.db-plate]:rounded-2xl" />
+        <DbBoardFigure className="db-figure-aside" />
       </div>
 
       <div className="mt-2 lg:hidden">
