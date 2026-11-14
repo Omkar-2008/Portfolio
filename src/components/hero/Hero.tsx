@@ -3,9 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import arduinoImage from "@/assets/arduino-control.jpg";
-import portraitLarge from "@/assets/omkar-hero-965.webp.asset.json";
-import portraitSmall from "@/assets/omkar-hero-720.webp.asset.json";
-import portraitThumb from "@/assets/omkar-thumb.webp.asset.json";
+import omkarPortrait from "@/assets/omkar-portrait.png";
 import { ContactCard } from "./ContactCard";
 import { GridOverlay } from "./GridOverlay";
 import { Portrait } from "./Portrait";
@@ -15,13 +13,11 @@ import { SiteNav } from "./SiteNav";
 gsap.registerPlugin(useGSAP);
 
 const PORTRAIT = {
-  src: portraitLarge.url,
-  srcSet: `${portraitSmall.url} 720w, ${portraitLarge.url} 965w`,
-  sizes: "(min-width: 1024px) 40vw, 100vw",
-  width: 965,
-  height: 1276,
+  src: omkarPortrait,
+  width: 768,
+  height: 1024,
 };
-const PORTRAIT_SRC = portraitThumb.url;
+const PORTRAIT_SRC = omkarPortrait;
 
 const INTRO_LINES = ["I build practical", "engineering solutions", "through technology."];
 const NAME = "OMKAR";
@@ -65,7 +61,7 @@ export function Hero() {
           delay: 2.6,
         });
 
-        // Pointer parallax: background type drifts against the cursor, portrait barely follows it.
+        // Pointer parallax: background type drifts against cursor, portrait follows softly
         if (!window.matchMedia("(pointer: fine)").matches) return;
         const layers = [
           { el: ".ghost-word", depth: -22 },
@@ -120,32 +116,29 @@ export function Hero() {
         <SiteNav />
 
         {/* Ghost word behind portrait */}
-        <div className="absolute inset-x-0 top-[38%] z-0 flex justify-center sm:top-[34%] lg:top-[20%]">
+        <div className="pointer-events-none absolute inset-x-0 top-[26%] sm:top-[22%] md:top-[18%] lg:top-[14%] xl:top-[12%] z-0 flex justify-center select-none overflow-hidden">
           <span
             data-reveal
             aria-hidden
-            className="ghost-word type-ghost select-none whitespace-nowrap text-[16vw] lg:text-[clamp(10rem,14.5vw,17rem)]"
+            className="ghost-word type-ghost whitespace-nowrap text-[17vw] sm:text-[15vw] lg:text-[clamp(9rem,14vw,17rem)] font-black text-center"
           >
             Engineer
           </span>
         </div>
 
-        {/* Portrait — right-anchored on small screens so the photo's cropped shoulder sits off-canvas */}
-        <div className="portrait-wrap absolute bottom-0 right-0 z-10 h-[60%] will-change-transform sm:h-[64%] lg:right-auto lg:left-[57%] lg:h-[86%] lg:-translate-x-1/2">
-          <div data-reveal className="portrait portrait-shadow h-full">
-            <Portrait {...PORTRAIT} className="lg:portrait-fade" />
+        {/* Portrait — centered, large, naturally proportioned, main visual focus */}
+        <div className="portrait-wrap pointer-events-none absolute inset-x-0 bottom-0 z-10 flex h-[68%] sm:h-[74%] md:h-[80%] lg:h-[87%] xl:h-[91%] items-end justify-center will-change-transform">
+          <div data-reveal className="portrait portrait-shadow h-full flex items-end justify-center">
+            <Portrait {...PORTRAIT} />
           </div>
         </div>
 
-        {/* Name overlaps only the lower torso, so the face stays clear */}
-        <div className="pointer-events-none absolute bottom-[3%] left-4 z-20 sm:left-8 lg:bottom-[-1.5%] lg:left-10">
-          <p data-reveal className="copyright mb-2 text-sm font-medium text-on-canvas lg:mb-4">
-            © 2026
-          </p>
+        {/* Balanced OMKAR typography centered at the bottom */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-[-1.5%] sm:bottom-[-2%] z-20 flex justify-center overflow-hidden pb-[0.02em]">
           <h1 className="sr-only">Omkar Potnuru — Electrical &amp; Electronics Engineering</h1>
           <p
             aria-hidden
-            className="type-mega flex overflow-hidden pb-[0.04em] text-[23vw] text-on-canvas lg:text-[clamp(8rem,14vw,16rem)]"
+            className="type-mega flex justify-center text-center text-[22vw] sm:text-[20vw] md:text-[18vw] lg:text-[clamp(8.5rem,15vw,17rem)] text-on-canvas select-none"
           >
             {NAME.split("").map((ch, i) => (
               <span key={i} data-reveal className="name-char inline-block">
@@ -155,9 +148,16 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Intro statement */}
-        <div className="absolute left-5 top-[15%] z-20 sm:left-8 lg:left-10 lg:top-[50%]">
-          <p className="max-w-[16rem] text-[15px] font-medium uppercase leading-snug tracking-[0.02em] text-on-canvas sm:max-w-[22rem] sm:text-base lg:text-[18px]">
+        {/* Copyright badge bottom left */}
+        <div className="pointer-events-none absolute bottom-4 left-4 sm:bottom-6 sm:left-8 lg:bottom-7 lg:left-10 z-30">
+          <p data-reveal className="copyright text-xs sm:text-sm font-medium tracking-wider text-on-canvas/80 select-none">
+            © 2026
+          </p>
+        </div>
+
+        {/* Intro statement — left side */}
+        <div className="absolute left-5 sm:left-8 lg:left-10 xl:left-14 top-[17%] sm:top-[22%] lg:top-[36%] z-20 max-w-[14rem] sm:max-w-[18rem] lg:max-w-[20rem]">
+          <p className="text-[13px] sm:text-[15px] lg:text-[17px] font-medium uppercase leading-snug tracking-[0.03em] text-on-canvas/90">
             {INTRO_LINES.map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span data-reveal className="intro-line block">
@@ -168,20 +168,20 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Floating project card */}
+        {/* Floating project card — top right */}
         <div
           data-reveal
-          className="float-card absolute right-4 top-[13%] z-30 hidden w-44 sm:block md:right-8 lg:right-10 lg:top-[24%] lg:w-56 xl:w-60"
+          className="float-card absolute right-4 sm:right-6 md:right-8 lg:right-10 xl:right-14 top-[15%] sm:top-[18%] lg:top-[20%] xl:top-[22%] z-30 hidden sm:block w-44 md:w-48 lg:w-56 xl:w-60"
         >
           <div className="float-card-inner">
             <ProjectCard image={arduinoImage} {...PROJECT} />
           </div>
         </div>
 
-        {/* Floating contact card */}
+        {/* Floating contact card — bottom right */}
         <div
           data-reveal
-          className="float-card absolute bottom-10 right-10 z-30 hidden w-[21rem] lg:block xl:w-[23rem]"
+          className="float-card absolute bottom-6 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-14 z-30 hidden lg:block w-[19rem] lg:w-[21rem] xl:w-[23rem]"
         >
           <div className="float-card-inner">
             <ContactCard thumbnail={PORTRAIT_SRC} />
