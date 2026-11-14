@@ -225,3 +225,8 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Pre-hide GSAP-revealed elements once JS is confirmed (class set in <head>) */
+.js [data-reveal] {
+  visibility: hidden;
+}
