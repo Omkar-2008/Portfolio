@@ -1,6 +1,6 @@
 type PortraitProps = {
   /** Transparent cut-out of Omkar. Leave empty to show the placeholder slot. */
-  src?: string;
+  src?: string | undefined;
   className?: string;
 };
 

@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 type ContactCardProps = {
-  thumbnail?: string;
+  thumbnail?: string | undefined;
   className?: string;
 };
 
