@@ -5,6 +5,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,6 +133,11 @@
     border-color: var(--color-border);
   }
 
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -186,12 +192,16 @@
   text-transform: uppercase;
 }
 
-/* Crisp white sticker outline that follows a transparent cut-out's silhouette */
-@utility sticker-outline {
-  filter:
-    drop-shadow(5px 0 0 var(--paper)) drop-shadow(-5px 0 0 var(--paper))
-    drop-shadow(0 5px 0 var(--paper)) drop-shadow(0 -5px 0 var(--paper))
-    drop-shadow(0 24px 30px oklch(0.25 0.1 33 / 0.35));
+/* Soft depth shadow under the portrait cut-out (outline is baked into the image) */
+@utility portrait-shadow {
+  filter: drop-shadow(0 28px 36px oklch(0.25 0.1 33 / 0.38));
+}
+
+/* Desktop: dissolve the photo's cropped right shoulder instead of showing a hard edge */
+@utility portrait-fade {
+  mask-image:
+    linear-gradient(to bottom, #000 40%, transparent 56%),
+    linear-gradient(to right, #000 78%, transparent 99%);
 }
 
 /* Nav link with a hand-drawn-feel underline sweep */
@@ -215,6 +225,23 @@
     transform: scaleX(1);
     transform-origin: left;
   }
+}
+
+/* Contact arrow: exits top-right, re-enters from bottom-left */
+.arrow-btn .arrow-out,
+.arrow-btn .arrow-in {
+  transition: translate 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.arrow-btn .arrow-in {
+  translate: -150% 150%;
+}
+.group:hover .arrow-btn .arrow-out,
+.group:focus-visible .arrow-btn .arrow-out {
+  translate: 150% -150%;
+}
+.group:hover .arrow-btn .arrow-in,
+.group:focus-visible .arrow-btn .arrow-in {
+  translate: 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
