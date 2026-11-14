@@ -30,8 +30,8 @@ export function Portrait({ src, className = "" }: PortraitProps) {
       >
         <defs>
           <linearGradient id="portrait-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--ink)" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="var(--ink)" stopOpacity="0.85" />
+            <stop offset="0%" stopColor="var(--ink)" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="var(--ink)" stopOpacity="0.5" />
           </linearGradient>
         </defs>
         <path

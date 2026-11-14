@@ -99,19 +99,19 @@ export function Hero() {
           <span
             data-reveal
             aria-hidden
-            className="ghost-word type-ghost select-none whitespace-nowrap text-[19vw] lg:text-[clamp(13rem,16.5vw,19rem)]"
+            className="ghost-word type-ghost select-none whitespace-nowrap text-[17vw] lg:text-[clamp(10rem,14.5vw,17rem)]"
           >
             Engineer
           </span>
         </div>
 
-        {/* Name, behind portrait so the face always stays clear */}
-        <div className="absolute bottom-[3%] left-4 z-[5] sm:left-8 lg:bottom-[-1.5%] lg:left-10">
+        {/* Name overlaps only the lower torso, so the face stays clear */}
+        <div className="absolute bottom-[3%] left-4 z-20 sm:left-8 lg:bottom-[-1.5%] lg:left-10">
           <p data-reveal className="copyright mb-2 text-sm font-medium text-on-canvas lg:mb-4">
             © 2026
           </p>
           <h1 className="sr-only">Omkar Potnuru — Electrical &amp; Electronics Engineering</h1>
-          <p aria-hidden className="type-mega flex overflow-hidden pb-[0.04em] text-[27vw] text-on-canvas lg:text-[clamp(9rem,15.5vw,17.5rem)]">
+          <p aria-hidden className="type-mega flex overflow-hidden pb-[0.04em] text-[26vw] text-on-canvas lg:text-[clamp(8rem,14vw,16rem)]">
             {NAME.split("").map((ch, i) => (
               <span key={i} data-reveal className="name-char inline-block">
                 {ch}
@@ -121,7 +121,7 @@ export function Hero() {
         </div>
 
         {/* Portrait */}
-        <div className="portrait-wrap absolute bottom-0 left-1/2 z-10 h-[64%] -translate-x-1/2 sm:h-[70%] lg:left-[54%] lg:h-[86%]">
+        <div className="portrait-wrap absolute bottom-0 left-1/2 z-10 h-[64%] -translate-x-1/2 sm:h-[70%] lg:left-[57%] lg:h-[84%]">
           <div data-reveal className="portrait h-full">
             <Portrait src={PORTRAIT_SRC} />
           </div>
